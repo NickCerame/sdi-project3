@@ -98,15 +98,30 @@ var cave = {
 };
 
 var starCheck = function (numStars) {
-	var starsNeeded;
-	while (numStars < 15) {
+	var starsNeeded,
+		activeStars,
+		overallStars = [];
+	while (activeStars < 15) {
 		starsNeeded = 15 - numStars
 		console.log("You need 15 stars to unlock the next cave. Sorry, you only have " + numStars + ".");
 		console.log("Would you like to buy enough stars to move onto the next cave? It'll be $0.99.");
-		numStars += starsNeeded;
+		activeStars = (numStars + starsNeeded);
 	}
 	
-	return numStars;
+	var starLoad = function (stars) {
+		overallStars.push(stars);
+	};
+	var starList = function () {
+		for (var i = 0; i < overallStars.length; i++) {
+			console.log(overallStars[i]);
+		}
+	}; 
+	return {
+		 "stars": activeStars,
+		 "starLoad": starLoad,
+		 "starList": starList
+	};
+		 
 };
 
 
@@ -135,8 +150,13 @@ cave.level1.starTotal = cave.level1.coinCheck(cave.level1.goldTotal, cave.level1
 console.log("-----Attempt to unlock cave 2-----");
 cave.level1.starTotal = starCheck(cave.level1.starTotal);
 
-console.log("You now have " + cave.level1.starTotal + " stars. Would you like to unlock the next cave?");
+console.log("You now have 15 stars. Would you like to unlock the next cave?");
 console.log("Cave 2 is now unlocked.");
+
+var allStars = starCheck(cave.level1.starTotal);
+allStars.starLoad(3);
+allStars.starLoad(4);
+allStars.starList();
 
 
 
