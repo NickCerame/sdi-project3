@@ -39,12 +39,13 @@ var goblin = {
 	}
 };
 
-var level = {
+var cave = {
+	itemsToSteal:		["Gold Coins", "Silver Coins", "Keys"],
+	level1: {
 	keysRequired: 		0,
 	coinOutput:			"",
 	timeRemaining: 		60,
 	itemsStolen: 		[0, 0, 0],
-	itemsToSteal:		["Gold Coins", "Silver Coins", "Keys"],
 	starTotal:			0,
 	goldTotal:			0,
 	silverTotal:		0,
@@ -54,9 +55,9 @@ var level = {
 		
 			console.log("Time Limit:");
 		
-			for (var stolenItems = items; stolenItems[2] != level.keysRequired; timeToSteal--) {
+			for (var stolenItems = items; stolenItems[2] != cave.level1.keysRequired; timeToSteal--) {
 				console.log(timeToSteal);
-				stolenItems[2] = Math.floor(Math.random() * (level.keysRequired + 1));
+				stolenItems[2] = Math.floor(Math.random() * (cave.level1.keysRequired + 1));
 		
 				silver = Math.floor(Math.random() * 8);
 				gold = Math.floor(Math.random() * 6);
@@ -92,6 +93,7 @@ var level = {
 			}
 	
 			return starTotal;
+		}
 	}
 };
 
@@ -110,35 +112,31 @@ var starCheck = function (numStars) {
 
 
 goblin.checkGoblin(goblin.name);
-level.keysRequired = goblin.checkDifficulty(goblin.readyToSteal, goblin.difficultyLevel);
-level.itemsStolen = level.itemAndTimeCheck(level.itemsStolen, level.timeRemaining);
-level.coinOutput = level.outputItems(level.itemsToSteal, level.itemsStolen);
+cave.level1.keysRequired = goblin.checkDifficulty(goblin.readyToSteal, goblin.difficultyLevel);
+cave.level1.itemsStolen = cave.level1.itemAndTimeCheck(cave.level1.itemsStolen, cave.level1.timeRemaining);
+cave.level1.coinOutput = cave.level1.outputItems(cave.itemsToSteal, cave.level1.itemsStolen);
 console.log("Stats:");
-console.log(level.coinOutput);
-if (level.itemsStolen[0] >= 15) {
-	level.goldTotal = true;
+console.log(cave.level1.coinOutput);
+if (cave.level1.itemsStolen[0] >= 15) {
+	cave.level1.goldTotal = true;
 }
 else {
-	level.goldTotal = false;
+	cave.level1.goldTotal = false;
 }
 
-if (level.itemsStolen[1] >= 25) {
-	level.silverTotal = true;
+if (cave.level1.itemsStolen[1] >= 25) {
+	cave.level1.silverTotal = true;
 }
 else {
-	level.silverTotal = false;
+	cave.level1.silverTotal = false;
 }
 
-level.starTotal = level.coinCheck(level.goldTotal, level.silverTotal);
+cave.level1.starTotal = cave.level1.coinCheck(cave.level1.goldTotal, cave.level1.silverTotal);
 console.log("-----Attempt to unlock cave 2-----");
-level.starTotal = starCheck(level.starTotal);
+cave.level1.starTotal = starCheck(cave.level1.starTotal);
 
-console.log("You now have " + level.starTotal + " stars. Would you like to unlock the next cave?");
+console.log("You now have " + cave.level1.starTotal + " stars. Would you like to unlock the next cave?");
 console.log("Cave 2 is now unlocked.");
-
-
-
-
 
 
 
