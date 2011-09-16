@@ -95,6 +95,18 @@ var level = {
 	}
 };
 
+var starCheck = function (numStars) {
+	var starsNeeded;
+	while (numStars < 15) {
+		starsNeeded = 15 - numStars
+		console.log("You need 15 stars to unlock the next cave. Sorry, you only have " + numStars + ".");
+		console.log("Would you like to buy enough stars to move onto the next cave? It'll be $0.99.");
+		numStars += starsNeeded;
+	}
+	
+	return numStars;
+};
+
 
 
 goblin.checkGoblin(goblin.name);
@@ -118,6 +130,11 @@ else {
 }
 
 level.starTotal = level.coinCheck(level.goldTotal, level.silverTotal);
+console.log("-----Attempt to unlock cave 2-----");
+level.starTotal = starCheck(level.starTotal);
+
+console.log("You now have " + level.starTotal + " stars. Would you like to unlock the next cave?");
+console.log("Cave 2 is now unlocked.");
 
 
 
