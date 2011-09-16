@@ -38,37 +38,86 @@ var goblin = {
 			}
 	}
 };
-	
-	
-	
-	
-var	itemsToSteal = ["Gold Coins", "Silver Coins", "Keys"],
-	itemsStolen = [0, 0, 0],
-	timeRemaining = 60,
-	goldTotal,
-	silverTotal,
-	coinOutput,
-	starTotal
-;
 
+var level = {
+	keysRequired: 		0,
+	coinOutput:			"",
+	timeRemaining: 		60,
+	itemsStolen: 		[0, 0, 0],
+	itemsToSteal:		["Gold Coins", "Silver Coins", "Keys"],
+	starTotal:			0,
+	goldTotal:			0,
+	silverTotal:		0,
+	itemAndTimeCheck: 	function (items, timeToSteal) {
+			var silver,
+				gold;
+		
+			console.log("Time Limit:");
+		
+			for (var stolenItems = items; stolenItems[2] != level.keysRequired; timeToSteal--) {
+				console.log(timeToSteal);
+				stolenItems[2] = Math.floor(Math.random() * (level.keysRequired + 1));
+		
+				silver = Math.floor(Math.random() * 8);
+				gold = Math.floor(Math.random() * 6);
+		
+				stolenItems[0] += gold;
+				stolenItems[1] += silver;
+			}
+	
+			if (timeToSteal === 0) {
+				console.log("Time limit reached. Better luck next time, " + goblin.name + ".");
+			}
+			else {
+				console.log("Great job collecting enough keys before the time limit ran out, " + goblin.name + ". You now have enough to unlock the next room.");
+			}
+	
+			return stolenItems;
+	},
+	outputItems: 		function (items, numItems) {
+			return ("You've collected " + numItems[0] + " " + items[0] + " and " + numItems[1] + " " + items[1] + ".");
+	},
+	coinCheck: 			function (goldCoins, silverCoins) {
+			if (goldCoins && silverCoins) {
+				console.log("You've earned 2 stars.");
+				starTotal = 2;
+			}
+			else if (goldCoins || silverCoins) {
+				console.log("You've earned 1 star.");
+				starTotal = 1;
+			}
+			else {
+				console.log("You've earned 0 stars.");
+				starTotal = 0;
+			}
+	
+			return starTotal;
+	}
+};
 
 
 
 goblin.checkGoblin(goblin.name);
-goblin.checkDifficulty(goblin.readyToSteal, goblin.difficultyLevel);
+level.keysRequired = goblin.checkDifficulty(goblin.readyToSteal, goblin.difficultyLevel);
+level.itemsStolen = level.itemAndTimeCheck(level.itemsStolen, level.timeRemaining);
+level.coinOutput = level.outputItems(level.itemsToSteal, level.itemsStolen);
+console.log("Stats:");
+console.log(level.coinOutput);
+if (level.itemsStolen[0] >= 15) {
+	level.goldTotal = true;
+}
+else {
+	level.goldTotal = false;
+}
 
+if (level.itemsStolen[1] >= 25) {
+	level.silverTotal = true;
+}
+else {
+	level.silverTotal = false;
+}
 
-
-
-
-
-
-
-
-
-
-
-
+level.starTotal = level.coinCheck(level.goldTotal, level.silverTotal);
 
 
 
